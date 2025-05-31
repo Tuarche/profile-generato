@@ -1,0 +1,96 @@
+// script.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  const preview = document.getElementById("preview-content");
+
+  const inputFields = [
+    "name", "twitch-id", "youtube-id", "x-id", "active-hours"
+  ];
+
+  inputFields.forEach(id => {
+    document.getElementById(id)?.addEventListener("input", updatePreview);
+  });
+
+  document.querySelectorAll(".weekdays input[type='checkbox']").forEach(cb => {
+    cb.addEventListener("change", updatePreview);
+  });
+
+  document.querySelectorAll(".checkbox-group input[type='checkbox']").forEach(cb => {
+    cb.addEventListener("change", updatePreview);
+  });
+
+  document.querySelectorAll("select").forEach(select => {
+    select.addEventListener("change", updatePreview);
+  });
+
+  document.querySelectorAll(".bg-sample").forEach(div => {
+    div.addEventListener("click", e => {
+      const bg = div.dataset.bg;
+      if (bg === "black") preview.style.background = "#000";
+      else if (bg === "white") preview.style.background = "#fff";
+      else preview.style.background = "linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0)";
+    });
+  });
+
+  document.getElementById("font-color")?.addEventListener("input", e => {
+    preview.style.color = e.target.value;
+  });
+
+  document.querySelectorAll(".font-sample").forEach(div => {
+    div.addEventListener("click", () => {
+      preview.style.fontFamily = window.getComputedStyle(div).fontFamily;
+    });
+  });
+
+  document.getElementById("icon")?.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = document.createElement("img");
+      img.src = reader.result;
+      img.style.width = "80px";
+      img.style.height = "80px";
+      img.style.borderRadius = "50%";
+      preview.prepend(img);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("background-img")?.addEventListener("change", e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      preview.style.background = `url('${reader.result}') center/cover`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function updatePreview() {
+    const name = document.getElementById("name").value;
+    const twitch = document.getElementById("twitch-id").value;
+    const youtube = document.getElementById("youtube-id").value;
+    const x = document.getElementById("x-id").value;
+    const hours = document.getElementById("active-hours").value;
+    const days = [...document.querySelectorAll(".weekdays input:checked")].map(cb => cb.value).join("、");
+    const styles = [...document.querySelectorAll(".checkbox-group input[type='checkbox']:checked")].map(cb => cb.value);
+    const selects = [...document.querySelectorAll("select")].map(s => s.options[s.selectedIndex].text);
+
+    preview.innerHTML = `
+      <h3>${name}</h3>
+      ${twitch ? `<p>Twitch: ${twitch}</p>` : ""}
+      ${youtube ? `<p>YouTube: ${youtube}</p>` : ""}
+      ${x ? `<p>X: ${x}</p>` : ""}
+      <p>活動時間: ${hours}</p>
+      <p>活動曜日: ${days}</p>
+      <p>スタイル: ${styles.join("、")}</p>
+      <p>コメント: ${selects[0]}</p>
+      <p>ROM: ${selects[1]}</p>
+      <p>コラボ方針: ${selects[2]}</p>
+      <p>ひとこと: ${selects[3]}</p>
+    `;
+  }
+
+  updatePreview();
+});
