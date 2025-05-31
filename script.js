@@ -180,4 +180,18 @@ function updatePreview() {
 
       <p><strong>活動時間:</strong> ${activeHours || '-'}</p>
       <p><strong>活動曜日:</strong> ${weekdays || '-'}</p>
-      <p><strong>
+      <p><strong>配信スタイル:</strong> ${streamStyles || '-'}</p>
+      <p><strong>ゲームジャンル:</strong> ${gameGenresText || '-'}</p>
+      <p><strong>特徴タグ:</strong> ${featureTags || '-'}</p>
+      <p><strong>コメント:</strong> ${comment || '-'}</p>
+      <p><strong>ROM:</strong> ${rom || '-'}</p>
+      <p><strong>コラボ方針:</strong> ${collab || '-'}</p>
+      <p><strong>ひとこと:</strong> ${shortComment || '-'}</p>
+    </div>
+  `;
+
+  previewContent.innerHTML = html;
+}
+
+// 最初に呼び出して表示
+updatePreview();
