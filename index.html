@@ -3,41 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Profile Generator</title>
+  <title>プロフィール画像ジェネレーター</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    #preview-content {
-      width: 600px;
-      height: 800px;
-      padding: 20px;
-      border-radius: 16px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      box-sizing: border-box;
-    }
-    .section-title {
-      font-weight: bold;
-      margin-top: 10px;
-    }
-    .preview-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
-  </style>
 </head>
 <body>
-  <!-- 入力フィールドなどは省略（既存のものを使ってください） -->
+  <div class="container">
+    <div class="editor">
+      <h2>プロフィール設定</h2>
 
-  <div class="preview-wrapper">
-    <div id="preview-content" style="background: #fff; color: #000; font-family: sans-serif;">
-      <!-- プレビュー内容がここに表示されます -->
+      <label>名前（必須）<input type="text" id="name" /></label>
+
+      <label>アイコン画像（任意）<input type="file" id="icon" accept="image/*" /></label><br />
+
+      <label>Twitch ID<input type="text" id="twitch-id" /></label>
+      <label>YouTube ID<input type="text" id="youtube-id" /></label>
+      <label>X（旧Twitter）ID<input type="text" id="x-id" /></label>
+
+      <label>活動時間（カンマ区切り）<input type="text" id="active-hours" placeholder="例: 8,9,10,18,19" /></label>
+
+      <label>活動曜日</label>
+      <div class="weekdays">
+        月<input type="checkbox" value="月" />
+        火<input type="checkbox" value="火" />
+        水<input type="checkbox" value="水" />
+        木<input type="checkbox" value="木" />
+        金<input type="checkbox" value="金" />
+        土<input type="checkbox" value="土" />
+        日<input type="checkbox" value="日" />
+      </div>
+
+      <button id="generate-image">画像として出力</button>
+    </div>
+
+    <div class="preview">
+      <h2>リアルタイムプレビュー</h2>
+      <div id="preview-content" style="border-radius: 20px; overflow: hidden; background: #fff; padding: 1em; width: 600px; height: auto;">
+        <!-- プレビュー内容がここに表示されます -->
+      </div>
     </div>
   </div>
 
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 </html>
