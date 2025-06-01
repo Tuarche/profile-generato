@@ -1,60 +1,75 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>プロフィール画像ジェネレーター - Tuarche版</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>プロフィール画像ジェネレーター</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <div class="form-area">
-      <h1>プロフィール画像ジェネレーター</h1>
+<div id="app-container">
 
-      <label><strong>★名前（必須）</strong>
-        <input type="text" id="displayName" placeholder="例：Tuarche" required />
-      </label>
+  <!-- 左側 入力フォーム -->
+  <section id="input-section">
+    <h1>プロフィール画像ジェネレーター</h1>
 
-      <label><strong>★Xアカウント（必須）</strong>
-        <input type="text" id="xAccount" placeholder="@Tu4rche" required />
-      </label>
+    <form id="profile-form">
 
-      <label><strong>★アイコン画像（任意）</strong>
-        <input type="file" id="iconUpload" accept="image/*" />
-      </label>
+      <!-- ★名前 -->
+      <label class="required" for="name-input">★名前（必須）</label>
+      <input type="text" id="name-input" name="name" required maxlength="30" placeholder="例: Tuarche" />
 
-      <!-- プラットフォーム選択 -->
+      <!-- ★アイコン画像アップロード -->
+      <label for="icon-upload">★アイコン画像（任意）</label>
+      <input type="file" id="icon-upload" name="icon" accept="image/*" />
+
+      <!-- アイコン形選択 -->
+      <label for="icon-shape">アイコン形状</label>
+      <select id="icon-shape" name="iconShape">
+        <option value="circle" selected>丸 (○)</option>
+        <option value="star">星 (☆)</option>
+        <option value="rounded-square">角丸四角 (□)</option>
+      </select>
+
+      <!-- ★Xアカウント -->
+      <label class="required" for="x-account-input">★Xアカウント（必須）</label>
+      <input type="text" id="x-account-input" name="xAccount" required maxlength="30" placeholder="@Tu4rche" />
+
+      <!-- 配信プラットフォーム -->
       <fieldset>
-        <legend><strong>★配信プラットフォーム</strong></legend>
-        <label><input type="checkbox" class="platform" value="Twitch"> Twitch 🎮</label>
-        <input type="text" class="platform-input" data-platform="Twitch" placeholder="Twitchアカウント" />
+        <legend>配信プラットフォーム（複数選択可）</legend>
 
-        <label><input type="checkbox" class="platform" value="YouTube"> YouTube 📺</label>
-        <input type="text" class="platform-input" data-platform="YouTube" placeholder="YouTubeチャンネル名" />
+        <label><input type="checkbox" name="platform" value="Twitch" /> Twitch 🎮</label>
+        <label><input type="checkbox" name="platform" value="YouTube" /> YouTube 📺</label>
+        <label><input type="checkbox" name="platform" value="Other" /> その他</label>
 
-        <label><input type="checkbox" class="platform" value="その他"> その他 ✍️</label>
-        <input type="text" class="platform-input" data-platform="その他" placeholder="その他プラットフォーム" />
+        <div id="platform-other-container" style="display:none;">
+          <label for="platform-other-text">その他配信プラットフォーム名</label>
+          <input type="text" id="platform-other-text" name="platformOther" maxlength="30" placeholder="例: Trovo" />
+        </div>
+
+        <div id="platform-accounts-container">
+          <!-- 選択されたプラットフォームごとのアカウント入力欄がここに追加されます -->
+        </div>
       </fieldset>
 
-      <!-- 出力ボタン -->
-      <button id="generateBtn">画像を生成する</button>
+      <!-- 以下、活動時間～ひとことは次に追加していきます -->
+
+    </form>
+  </section>
+
+  <!-- 右側 リアルタイムプレビュー -->
+  <section id="preview-section">
+    <h2>リアルタイムプレビュー</h2>
+    <div id="profile-preview">
+      <!-- プレビュー画像がここに描画されます -->
     </div>
 
-    <div class="preview-area">
-      <div id="previewCard">
-        <img id="iconPreview" src="" alt="アイコン" />
-        <div class="info">
-          <h2 id="namePreview">名前</h2>
-          <p id="xPreview">@example</p>
-          <div id="platformPreview"></div>
-        </div>
-      </div>
+    <button id="generate-image-btn" type="button">画像を生成する</button>
+  </section>
 
-      <a id="downloadLink" style="display:none">画像をダウンロード</a>
-    </div>
-  </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
