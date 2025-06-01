@@ -7,66 +7,240 @@
 <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div id="app-container">
+<div class="container">
 
-  <!-- 左側 入力フォーム -->
-  <section id="input-section">
+  <!-- 入力フォームエリア -->
+  <div class="input-area">
     <h1>プロフィール画像ジェネレーター</h1>
 
-    <form id="profile-form">
+    <!-- アイコンアップロード -->
+    <section>
+      <label for="iconInput"><strong>アイコン画像アップロード</strong></label><br/>
+      <input type="file" id="iconInput" accept="image/*" />
+    </section>
 
-      <!-- ★名前 -->
-      <label class="required" for="name-input">★名前（必須）</label>
-      <input type="text" id="name-input" name="name" required maxlength="30" placeholder="例: Tuarche" />
+    <!-- 名前 -->
+    <section>
+      <label for="nameInput"><strong>名前</strong></label><br/>
+      <input type="text" id="nameInput" placeholder="名前を入力" maxlength="30" />
+    </section>
 
-      <!-- ★アイコン画像アップロード -->
-      <label for="icon-upload">★アイコン画像（任意）</label>
-      <input type="file" id="icon-upload" name="icon" accept="image/*" />
+    <!-- Xアカウント -->
+    <section>
+      <label for="xAccountInput"><strong>X（旧Twitter）アカウント</strong></label><br/>
+      <input type="text" id="xAccountInput" placeholder="@アカウント名" maxlength="30" />
+    </section>
 
-      <!-- アイコン形選択 -->
-      <label for="icon-shape">アイコン形状</label>
-      <select id="icon-shape" name="iconShape">
-        <option value="circle" selected>丸 (○)</option>
-        <option value="star">星 (☆)</option>
-        <option value="rounded-square">角丸四角 (□)</option>
+    <!-- 配信プラットフォーム -->
+    <section>
+      <label for="platformSelect"><strong>配信プラットフォーム</strong></label><br/>
+      <select id="platformSelect">
+        <option value="Twitch">Twitch</option>
+        <option value="YouTube">YouTube</option>
+        <option value="OPENREC">OPENREC</option>
+        <option value="Mildom">Mildom</option>
+        <option value="その他">その他</option>
       </select>
+    </section>
 
-      <!-- ★Xアカウント -->
-      <label class="required" for="x-account-input">★Xアカウント（必須）</label>
-      <input type="text" id="x-account-input" name="xAccount" required maxlength="30" placeholder="@Tu4rche" />
+    <!-- 活動時間 -->
+    <section>
+      <label><strong>活動時間（24時間表示）</strong></label><br/>
+      <input type="number" id="activityStart" min="0" max="23" value="18" /> 〜
+      <input type="number" id="activityEnd" min="1" max="24" value="22" />
+      <div class="activity-bar-container">
+        <div class="activity-bar" id="activityBar"></div>
+      </div>
+    </section>
 
-      <!-- 配信プラットフォーム -->
-      <fieldset>
-        <legend>配信プラットフォーム（複数選択可）</legend>
+    <!-- 活動曜日 -->
+    <section>
+      <label><strong>活動曜日</strong></label><br/>
+      <div class="checkbox-group" id="weekdayGroup">
+        <label><input type="checkbox" value="月" />月</label>
+        <label><input type="checkbox" value="火" />火</label>
+        <label><input type="checkbox" value="水" />水</label>
+        <label><input type="checkbox" value="木" />木</label>
+        <label><input type="checkbox" value="金" />金</label>
+        <label><input type="checkbox" value="土" />土</label>
+        <label><input type="checkbox" value="日" />日</label>
+        <label><input type="checkbox" value="不定期" />不定期</label>
+      </div>
+    </section>
 
-        <label><input type="checkbox" name="platform" value="Twitch" /> Twitch 🎮</label>
-        <label><input type="checkbox" name="platform" value="YouTube" /> YouTube 📺</label>
-        <label><input type="checkbox" name="platform" value="Other" /> その他</label>
+    <!-- 配信スタイル -->
+    <section>
+      <label><strong>配信スタイル（複数選択可）</strong></label><br/>
+      <div class="checkbox-group" id="streamStyleGroup">
+        <label><input type="checkbox" value="雑談多め" />雑談多め</label>
+        <label><input type="checkbox" value="ゲーム集中型" />ゲーム集中型</label>
+        <label><input type="checkbox" value="作業用BGM" />作業用BGM</label>
+        <label><input type="checkbox" value="歌枠" />歌枠</label>
+        <label><input type="checkbox" value="絵描き枠" />絵描き枠</label>
+        <label><input type="checkbox" value="歌ってみた" />歌ってみた</label>
+        <label><input type="checkbox" value="企画配信" />企画配信</label>
+        <label><input type="checkbox" value="チャット重視" />チャット重視</label>
+        <label><input type="checkbox" value="初見歓迎" />初見歓迎</label>
+        <label><input type="checkbox" value="コラボ中心" />コラボ中心</label>
+        <label><input type="checkbox" value="コメント歓迎" />コメント歓迎</label>
+        <label><input type="checkbox" value="ロム歓迎" />ロム歓迎</label>
+        <label><input type="checkbox" value="リスナー参加型" />リスナー参加型</label>
+        <label><input type="checkbox" value="ASMR枠" />ASMR枠</label>
+        <label><input type="checkbox" value="FPSプレイ中心" />FPSプレイ中心</label>
+        <label><input type="checkbox" value="RP（ロールプレイ）" />RP（ロールプレイ）</label>
+      </div>
+    </section>
 
-        <div id="platform-other-container" style="display:none;">
-          <label for="platform-other-text">その他配信プラットフォーム名</label>
-          <input type="text" id="platform-other-text" name="platformOther" maxlength="30" placeholder="例: Trovo" />
+    <!-- ゲームジャンル -->
+    <section>
+      <label><strong>ゲームジャンル（複数選択可）</strong></label><br/>
+      <div class="checkbox-group" id="gameGenreGroup">
+        <label><input type="checkbox" value="FPS／TPS" />FPS／TPS</label>
+        <label><input type="checkbox" value="アクション／アクションRPG" />アクション／アクションRPG</label>
+        <label><input type="checkbox" value="ホラー" />ホラー</label>
+        <label><input type="checkbox" value="パーティ／カジュアル" />パーティ／カジュアル</label>
+        <label><input type="checkbox" value="シミュレーション" />シミュレーション</label>
+        <label><input type="checkbox" value="パズル・ボード" />パズル・ボード</label>
+        <label><input type="checkbox" value="MOBA" />MOBA</label>
+        <label><input type="checkbox" value="音ゲー" />音ゲー</label>
+        <label><input type="checkbox" value="TRPG" />TRPG</label>
+        <label><input type="checkbox" value="その他" />その他</label>
+      </div>
+      <input type="text" id="gameGenreOther" placeholder="その他があれば自由記入" />
+    </section>
+
+    <!-- プレイスタイル -->
+    <section>
+      <label for="playStyleSelect"><strong>プレイスタイル</strong></label><br/>
+      <select id="playStyleSelect">
+        <option value="雑談メイン">雑談メイン</option>
+        <option value="ガチプレイ">ガチプレイ</option>
+        <option value="ゆるプレイ">ゆるプレイ</option>
+        <option value="まったり">まったり</option>
+        <option value="解説・実況">解説・実況</option>
+      </select>
+    </section>
+
+    <!-- 特徴タグ -->
+    <section>
+      <label><strong>特徴タグ（3つまで）</strong></label><br/>
+      <input type="text" id="tag1" placeholder="特徴タグ1" maxlength="20" />
+      <input type="text" id="tag2" placeholder="特徴タグ2" maxlength="20" />
+      <input type="text" id="tag3" placeholder="特徴タグ3" maxlength="20" />
+    </section>
+
+    <!-- コメント -->
+    <section>
+      <label for="commentSelect"><strong>コメント</strong></label><br/>
+      <select id="commentSelect">
+        <option value="いっぱい話しかけて！">いっぱい話しかけて！</option>
+        <option value="のんびり話そう">のんびり話そう</option>
+        <option value="静かに見守ってね">静かに見守ってね</option>
+        <option value="必要なときだけでOK">必要なときだけでOK</option>
+        <option value="チャットはご遠慮ください">チャットはご遠慮ください</option>
+        <option value="自由入力">自由入力</option>
+      </select>
+      <input type="text" id="commentCustom" placeholder="自由入力する場合はこちら" />
+    </section>
+
+    <!-- ROM -->
+    <section>
+      <label for="romSelect"><strong>ROM</strong></label><br/>
+      <select id="romSelect">
+        <option value="無言でOK！ゆっくりしてって！">無言でOK！ゆっくりしてって！</option>
+        <option value="ROMよりコメほしい">ROMよりコメほしい</option>
+        <option value="ROM NG">ROM NG</option>
+        <option value="一言ほしい派です！">一言ほしい派です！</option>
+        <option value="その他">その他</option>
+      </select>
+      <input type="text" id="romCustom" placeholder="自由入力する場合はこちら" />
+    </section>
+
+    <!-- コラボ方針 -->
+    <section>
+      <label for="collabSelect"><strong>コラボ方針</strong></label><br/>
+      <select id="collabSelect">
+        <option value="誰でも歓迎">誰でも歓迎（お声がけどんどんどうぞ！）</option>
+        <option value="誰でも歓迎(声かけます)">誰でも歓迎（声かけます！）</option>
+        <option value="仲良くなったらお願いします！">仲良くなったらお願いします！</option>
+        <option value="ソロ専">ソロ専（基本はひとりでやってます）</option>
+        <option value="その他">その他</option>
+      </select>
+      <input type="text" id="collabCustom" placeholder="自由入力する場合はこちら" />
+    </section>
+
+    <!-- ひとこと -->
+    <section>
+      <label for="catchphraseInput"><strong>ひとこと</strong></label><br/>
+      <input type="text" id="catchphraseInput" maxlength="50" placeholder="世界観や雰囲気を表す一言" />
+    </section>
+
+    <!-- 背景選択 -->
+    <section>
+      <label><strong>背景選択</strong></label><br/>
+      <div id="bgSelector" class="background-options">
+        <div class="bg-option" data-bg="black" style="background:#000;"></div>
+        <div class="bg-option" data-bg="white" style="background:#fff; border:1px solid #ccc;"></div>
+        <div class="bg-option" data-bg="gradient" style="background: linear-gradient(45deg, #6b8cff, #00d4ff);"></div>
+        <div class="bg-option" data-bg="wood" style="background: linear-gradient(45deg, #b3865a, #8b5e3c);"></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- プレビューエリア -->
+  <div class="preview-area">
+    <div class="profile-card" id="profileCard">
+
+      <!-- 左上アイコン -->
+      <div class="profile-icon" id="profileIconContainer">
+        <img src="" alt="アイコン" id="profileIcon" />
+      </div>
+
+      <!-- 右上名前・X・プラットフォーム -->
+      <div class="profile-header">
+        <div id="profileName" class="profile-name">名前</div>
+        <div id="profileX" class="profile-x">@アカウント</div>
+        <div id="profilePlatform" class="profile-platform">プラットフォーム</div>
+      </div>
+
+      <!-- 活動時間バー -->
+      <div class="profile-activity">
+        <div id="profileActivityTime">活動時間</div>
+        <div class="activity-bar">
+          <div id="profileActivityBar"></div>
         </div>
+      </div>
 
-        <div id="platform-accounts-container">
-          <!-- 選択されたプラットフォームごとのアカウント入力欄がここに追加されます -->
-        </div>
-      </fieldset>
+      <!-- 活動曜日 -->
+      <div class="profile-weekdays" id="profileWeekdays">曜日</div>
 
-      <!-- 以下、活動時間～ひとことは次に追加していきます -->
+      <!-- 配信スタイル -->
+      <div class="profile-stream-style" id="profileStreamStyle">配信スタイル</div>
 
-    </form>
-  </section>
+      <!-- ゲームジャンル -->
+      <div class="profile-game-genre" id="profileGameGenre">ゲームジャンル</div>
 
-  <!-- 右側 リアルタイムプレビュー -->
-  <section id="preview-section">
-    <h2>リアルタイムプレビュー</h2>
-    <div id="profile-preview">
-      <!-- プレビュー画像がここに描画されます -->
+      <!-- プレイスタイル -->
+      <div class="profile-play-style" id="profilePlayStyle">プレイスタイル</div>
+
+      <!-- 特徴タグ -->
+      <div class="profile-tags" id="profileTags">特徴タグ</div>
+
+      <!-- コメント -->
+      <div class="profile-comment" id="profileComment">コメント</div>
+
+      <!-- ROM -->
+      <div class="profile-rom" id="profileRom">ROM</div>
+
+      <!-- コラボ方針 -->
+      <div class="profile-collab" id="profileCollab">コラボ方針</div>
+
+      <!-- ひとこと -->
+      <div class="profile-catchphrase" id="profileCatchphrase">ひとこと</div>
+
     </div>
-
-    <button id="generate-image-btn" type="button">画像を生成する</button>
-  </section>
+  </div>
 
 </div>
 
