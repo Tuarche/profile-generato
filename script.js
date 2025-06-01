@@ -1,136 +1,102 @@
-// script.js
+const nameInput = document.getElementById("name");
+const twitchInput = document.getElementById("twitch-id");
+const youtubeInput = document.getElementById("youtube-id");
+const xInput = document.getElementById("x-id");
+const activeHoursInput = document.getElementById("active-hours");
+const weekdayInputs = document.querySelectorAll(".weekdays input");
+const preview = document.getElementById("preview-content");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const preview = document.getElementById("preview-content");
+function createBar(items, activeSet, total, type) {
+  const bar = document.createElement("div");
+  bar.className = type === "hour" ? "activity-bar" : "weekday-bar";
 
-  const inputFields = [
-    "name", "twitch-id", "youtube-id", "x-id", "active-hours"
-  ];
-
-  inputFields.forEach(id => {
-    document.getElementById(id)?.addEventListener("input", updatePreview);
-  });
-
-  document.querySelectorAll(".weekdays input[type='checkbox']").forEach(cb => {
-    cb.addEventListener("change", updatePreview);
-  });
-
-  document.querySelectorAll(".checkbox-group input[type='checkbox']").forEach(cb => {
-    cb.addEventListener("change", updatePreview);
-  });
-
-  document.querySelectorAll("select").forEach(select => {
-    select.addEventListener("change", updatePreview);
-  });
-
-  document.querySelectorAll(".bg-sample").forEach(div => {
-    div.addEventListener("click", e => {
-      const bg = div.dataset.bg;
-      if (bg === "black") preview.style.background = "#000";
-      else if (bg === "white") preview.style.background = "#fff";
-      else preview.style.background = "linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0)";
-    });
-  });
-
-  document.getElementById("font-color")?.addEventListener("input", e => {
-    preview.style.color = e.target.value;
-  });
-
-  document.querySelectorAll(".font-sample").forEach(div => {
-    div.addEventListener("click", () => {
-      preview.style.fontFamily = window.getComputedStyle(div).fontFamily;
-    });
-  });
-
-  document.getElementById("icon")?.addEventListener("change", e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = document.createElement("img");
-      img.src = reader.result;
-      img.style.width = "80px";
-      img.style.height = "80px";
-      img.style.borderRadius = "50%";
-      img.style.objectFit = "cover";
-      img.style.marginBottom = "10px";
-      preview.prepend(img);
-    };
-    reader.readAsDataURL(file);
-  });
-
-  document.getElementById("background-img")?.addEventListener("change", e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      preview.style.background = `url('${reader.result}') center/cover`;
-    };
-    reader.readAsDataURL(file);
-  });
-
-  function generateHourBar(hours) {
-    const bar = Array(24).fill('□');
-    const ranges = hours.split(/[、,\s]+/);
-    ranges.forEach(r => {
-      const [start, end] = r.split("〜").map(n => parseInt(n));
-      if (!isNaN(start) && !isNaN(end)) {
-        for (let i = start; i < end; i++) {
-          if (i >= 0 && i < 24) bar[i] = '■';
-        }
-      }
-    });
-    return `${Array.from({length: 24}, (_, i) => i + 1).join(' ')}\n${bar.join(' ')}`;
+  for (let i = 0; i < total; i++) {
+    const item = document.createElement("span");
+    item.textContent = type === "hour" ? i + 1 : items[i];
+    if (activeSet.has(type === "hour" ? i + 1 : items[i])) {
+      item.classList.add("active");
+    }
+    bar.appendChild(item);
   }
 
-  function generateWeekBar(days) {
-    const allDays = ['月', '火', '水', '木', '金', '土', '日'];
-    const bar = allDays.map(day => days.includes(day) ? '■' : '□');
-    return `${allDays.join(' ')}\n${bar.join(' ')}`;
+  return bar;
+}
+
+function renderPreview() {
+  const name = nameInput.value || "名前未入力";
+  const twitch = twitchInput.value;
+  const youtube = youtubeInput.value;
+  const x = xInput.value;
+
+  const activeHours = new Set(
+    (activeHoursInput.value || "")
+      .split(",")
+      .map((n) => parseInt(n.trim()))
+      .filter((n) => n >= 1 && n <= 24)
+  );
+
+  const activeDays = new Set();
+  weekdayInputs.forEach((el) => {
+    if (el.checked) activeDays.add(el.value);
+  });
+
+  // プレビューをクリア
+  preview.innerHTML = "";
+
+  // アイコン・名前・SNS
+  const nameEl = document.createElement("h2");
+  nameEl.textContent = name;
+  preview.appendChild(nameEl);
+
+  if (x) {
+    const xEl = document.createElement("div");
+    xEl.textContent = `X: ${x}`;
+    preview.appendChild(xEl);
   }
 
-  function updatePreview() {
-    const name = document.getElementById("name").value;
-    const twitch = document.getElementById("twitch-id").value;
-    const youtube = document.getElementById("youtube-id").value;
-    const x = document.getElementById("x-id").value;
-    const hours = document.getElementById("active-hours").value;
-    const daysChecked = [...document.querySelectorAll(".weekdays input:checked")];
-    const days = daysChecked.map(cb => cb.value);
-    const styles = [...document.querySelectorAll(".checkbox-group input[type='checkbox']:checked")].map(cb => cb.value);
-    const selects = [...document.querySelectorAll("select")].map(s => s.options[s.selectedIndex].text);
-
-    const hourBar = generateHourBar(hours);
-    const weekBar = generateWeekBar(days);
-
-    preview.innerHTML = `
-      <div><strong>${name}</strong></div>
-      ${x ? `<div>X: ${x}</div>` : ""}
-      ${twitch ? `<div>Twitch: ${twitch}</div>` : ""}
-      ${youtube ? `<div>YouTube: ${youtube}</div>` : ""}
-
-      <div class="section-title">活動時間</div>
-      <div style="white-space: pre; font-family: monospace;">${hourBar}</div>
-
-      <div class="section-title">活動曜日</div>
-      <div style="white-space: pre; font-family: monospace;">${weekBar}</div>
-
-      <div class="section-title">スタイル</div>
-      <div>${styles.join("、")}</div>
-
-      <div class="section-title">コメント</div>
-      <div>${selects[0]}</div>
-
-      <div class="section-title">ROM</div>
-      <div>${selects[1]}</div>
-
-      <div class="section-title">コラボ方針</div>
-      <div>${selects[2]}</div>
-
-      <div class="section-title">ひとこと</div>
-      <div>${selects[3]}</div>
-    `;
+  if (twitch) {
+    const twitchEl = document.createElement("div");
+    twitchEl.textContent = `Twitch: ${twitch}`;
+    preview.appendChild(twitchEl);
   }
 
-  updatePreview();
+  if (youtube) {
+    const ytEl = document.createElement("div");
+    ytEl.textContent = `YouTube: ${youtube}`;
+    preview.appendChild(ytEl);
+  }
+
+  // 活動時間
+  const activeTimeLabel = document.createElement("div");
+  activeTimeLabel.className = "label";
+  activeTimeLabel.textContent = "【活動時間】";
+  preview.appendChild(activeTimeLabel);
+  preview.appendChild(createBar([], activeHours, 24, "hour"));
+
+  // 曜日
+  const weekdayLabel = document.createElement("div");
+  weekdayLabel.className = "label";
+  weekdayLabel.textContent = "【活動曜日】";
+  preview.appendChild(weekdayLabel);
+  preview.appendChild(
+    createBar(["月", "火", "水", "木", "金", "土", "日"], activeDays, 7, "day")
+  );
+}
+
+// 入力イベント
+[nameInput, twitchInput, youtubeInput, xInput, activeHoursInput].forEach((input) =>
+  input.addEventListener("input", renderPreview)
+);
+weekdayInputs.forEach((input) => input.addEventListener("change", renderPreview));
+
+// 出力ボタン
+document.getElementById("generate-image")?.addEventListener("click", () => {
+  html2canvas(preview).then((canvas) => {
+    const a = document.createElement("a");
+    a.href = canvas.toDataURL("image/png");
+    a.download = "profile.png";
+    a.click();
+  });
 });
+
+window.addEventListener("DOMContentLoaded", renderPreview);
