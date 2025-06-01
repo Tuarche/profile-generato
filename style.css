@@ -1,0 +1,341 @@
+/* リセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 全体レイアウト */
+body, html {
+  height: 100%;
+  background: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  width: 1000px;
+  max-width: 100vw;
+  gap: 30px;
+}
+
+/* 左側フォーム */
+.form-section {
+  width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px 30px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+  scroll-behavior: smooth;
+}
+
+/* フォーム見出し（★付き） */
+.form-section h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #222;
+  border-left: 4px solid #5c6bc0;
+  padding-left: 8px;
+  margin-top: 28px;
+}
+
+/* 最初の見出しはマージントップなし */
+.form-section h2:first-of-type {
+  margin-top: 0;
+}
+
+/* ラベル */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* テキスト入力、セレクト、textarea */
+input[type="text"],
+input[type="url"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-bottom: 16px;
+  border: 1.8px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.25s ease;
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #5c6bc0;
+}
+
+/* チェックボックス・ラジオボタンを横並びに */
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.checkbox-group label,
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* 活動時間バー用 */
+.activity-bar,
+.weekday-bar {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 16px;
+}
+
+.activity-bar div,
+.weekday-bar div {
+  flex: 1;
+  height: 14px;
+  border-radius: 6px;
+  background: #ddd;
+  transition: background-color 0.3s ease;
+  font-size: 0.75rem;
+  line-height: 14px;
+  text-align: center;
+  color: #555;
+  user-select: none;
+}
+
+/* 活動時間の活動時間部分の色 */
+.activity-bar div.active {
+  background: #5c6bc0;
+  color: white;
+}
+
+/* 曜日バーは少し幅広め */
+.weekday-bar div {
+  flex-basis: 12.5%;
+  font-weight: 600;
+}
+
+/* 画像アップロードボタン */
+input[type="file"] {
+  margin-bottom: 20px;
+}
+
+/* 大きめのテキストエリア */
+textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* ボタン（画像化など） */
+button {
+  background-color: #5c6bc0;
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #3f51b5;
+}
+
+/* 右側プレビュー */
+.preview-section {
+  flex-grow: 1;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 16px;
+  padding: 25px 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* プレビューカードのベース */
+.preview-card {
+  background: #fafafa;
+  border-radius: 18px;
+  padding: 25px 30px;
+  box-shadow: inset 0 0 12px #dcdcf9;
+  width: 100%;
+  max-width: 460px;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+}
+
+/* アイコン+名前+X+プラットフォームの横並びエリア */
+.top-info {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+/* アイコン画像 */
+.profile-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #ccc;
+  object-fit: cover;
+  border: 3.5px solid #5c6bc0;
+  flex-shrink: 0;
+}
+
+/* 名前＆アカウント情報 */
+.name-x-platform {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+/* 名前 */
+.name-x-platform .name {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #2c2c54;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Xアカウントとプラットフォームアイコンは小さめで縦に */
+.name-x-platform .accounts {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* 各プラットフォームのアカウント表示 */
+.account-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+/* プラットフォームアイコンの小さな画像 */
+.account-item img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
+  border-radius: 4px;
+}
+
+/* 活動時間〜ひとことまで縦に並べるセクション */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 0.92rem;
+  color: #444;
+  line-height: 1.3;
+}
+
+/* 各情報のラベルを少し強調 */
+.info-list strong {
+  font-weight: 700;
+  color: #5c6bc0;
+}
+
+/* 活動時間バー（プレビュー用） */
+.preview-activity-bar,
+.preview-weekday-bar {
+  display: flex;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.preview-activity-bar div,
+.preview-weekday-bar div {
+  flex: 1;
+  height: 14px;
+  border-radius: 6px;
+  background: #ddd;
+  text-align: center;
+  font-size: 0.65rem;
+  line-height: 14px;
+  user-select: none;
+  color: #555;
+}
+
+.preview-activity-bar div.active,
+.preview-weekday-bar div.active {
+  background-color: #5c6bc0;
+  color: white;
+}
+
+/* ひとことセクション */
+.comment-section {
+  font-style: italic;
+  color: #5c6bc0;
+  font-weight: 600;
+  margin-top: 14px;
+  padding-left: 12px;
+  border-left: 3px solid #5c6bc0;
+}
+
+/* スクロールバーのカスタム（Webkit系） */
+.form-section::-webkit-scrollbar,
+.preview-section::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form-section::-webkit-scrollbar-thumb,
+.preview-section::-webkit-scrollbar-thumb {
+  background-color: #5c6bc0;
+  border-radius: 10px;
+}
+
+/* スマホや狭い画面向けレスポンシブ */
+@media (max-width: 980px) {
+  .container {
+    flex-direction: column;
+    width: 90vw;
+  }
+  .form-section,
+  .preview-section {
+    width: 100%;
+    max-height: 60vh;
+  }
+  .preview-card {
+    max-width: 100%;
+  }
+}
