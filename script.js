@@ -263,4 +263,75 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   textColorInput.addEventListener('input', updateTextColor);
   updateTextColor();
+
+
+  // 画像生成ボタン押下時の処理
+document.getElementById('generateImageBtn').addEventListener('click', () => {
+  const canvas = document.getElementById('profileCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // キャンバス初期化
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 背景（白グラデーション）
+  const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  gradient.addColorStop(0, '#ffffff');
+  gradient.addColorStop(1, '#e0e0e0');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // アイコン（左上） - もしアップロード画像があれば描画、なければ丸いダミー
+  const iconImg = document.getElementById('iconPreview'); // 事前にプレビュー表示してるimgタグ想定
+  const iconSize = 120;
+  if(iconImg && iconImg.src) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(20 + iconSize*0.5, 20);
+    ctx.arc(20 + iconSize*0.5, 20 + iconSize*0.5, iconSize/2, 0, Math.PI*2);
+    ctx.closePath();
+    ctx.clip();
+    ctx.drawImage(iconImg, 20, 20, iconSize, iconSize);
+    ctx.restore();
+  } else {
+    // ダミー丸アイコン
+    ctx.fillStyle = '#aaa';
+    ctx.beginPath();
+    ctx.arc(20 + iconSize/2, 20 + iconSize/2, iconSize/2, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  // 名前（アイコン右横）
+  const name = document.getElementById('nameInput').value || '名前未設定';
+  ctx.fillStyle = '#222';
+  ctx.font = 'bold 28px Arial';
+  ctx.fillText(name, 160, 60);
+
+  // Xアカウント（その下）
+  const xAccount = document.getElementById('xAccountInput').value || '';
+  if(xAccount) {
+    ctx.font = '18px Arial';
+    ctx.fillStyle = '#555';
+    ctx.fillText(`X: @${xAccount}`, 160, 95);
+  }
+
+  // 配信プラットフォーム（その下）
+  const twitchChecked = document.getElementById('platformTwitch').checked;
+  const youtubeChecked = document.getElementById('platformYouTube').checked;
+  let platformText = '';
+  if(twitchChecked) platformText += 'Twitch ';
+  if(youtubeChecked) platformText += 'YouTube ';
+  ctx.font = '16px Arial';
+  ctx.fillStyle = '#444';
+  ctx.fillText(platformText.trim(), 160, 120);
+
+  // ひとこと（下部）
+  const catchphrase = document.getElementById('profileCatchphrase').textContent || '';
+  ctx.font = 'italic 20px Arial';
+  ctx.fillStyle = '#666';
+  ctx.fillText(catchphrase, 20, canvas.height - 40);
+
+  // Canvasを表示
+  canvas.style.display = 'block';
+});
+
 });
