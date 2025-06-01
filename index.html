@@ -3,186 +3,58 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>プロフィール画像ジェネレーター</title>
+  <title>プロフィール画像ジェネレーター - Tuarche版</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .container {
-      display: flex;
-    }
-    .editor {
-      width: 45%;
-      padding: 1em;
-    }
-    .preview {
-      width: 55%;
-      padding: 1em;
-    }
-    .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5em;
-    }
-    .checkbox-group label {
-      flex: 1 0 18%;
-      white-space: nowrap;
-    }
-    .color-sample, .font-sample, .bg-sample {
-      display: inline-block;
-      margin: 0.3em;
-      padding: 0.5em;
-      border: 1px solid #ccc;
-      cursor: pointer;
-    }
-    .bg-sample {
-      width: 60px;
-      height: 30px;
-    }
-    .bg-black { background: black; }
-    .bg-white { background: white; }
-    .bg-gradient { background: linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0); }
-    select, input[type="text"] {
-      display: block;
-      margin-top: 0.3em;
-      margin-bottom: 1em;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
-    <div class="editor">
-      <h2>プロフィール設定</h2>
+    <div class="form-area">
+      <h1>プロフィール画像ジェネレーター</h1>
 
-      <label>名前（必須）<input type="text" id="name" /></label>
+      <label><strong>★名前（必須）</strong>
+        <input type="text" id="displayName" placeholder="例：Tuarche" required />
+      </label>
 
-      <label>アイコン画像（任意）<input type="file" id="icon" accept="image/*" /></label><br />
+      <label><strong>★Xアカウント（必須）</strong>
+        <input type="text" id="xAccount" placeholder="@Tu4rche" required />
+      </label>
 
-      <label><input type="checkbox" id="twitch-check" /> Twitch ID</label>
-      <input type="text" id="twitch-id" class="conditional" placeholder="Twitch ID" />
+      <label><strong>★アイコン画像（任意）</strong>
+        <input type="file" id="iconUpload" accept="image/*" />
+      </label>
 
-      <label><input type="checkbox" id="youtube-check" /> YouTube ID</label>
-      <input type="text" id="youtube-id" class="conditional" placeholder="YouTube ID" />
+      <!-- プラットフォーム選択 -->
+      <fieldset>
+        <legend><strong>★配信プラットフォーム</strong></legend>
+        <label><input type="checkbox" class="platform" value="Twitch"> Twitch 🎮</label>
+        <input type="text" class="platform-input" data-platform="Twitch" placeholder="Twitchアカウント" />
 
-      <label>X（旧Twitter）<input type="text" id="x-id" placeholder="@example" /></label>
+        <label><input type="checkbox" class="platform" value="YouTube"> YouTube 📺</label>
+        <input type="text" class="platform-input" data-platform="YouTube" placeholder="YouTubeチャンネル名" />
 
-      <label>活動時間（カンマ区切り）<input type="text" id="active-hours" placeholder="例: 8,9,10,18,19" /></label>
+        <label><input type="checkbox" class="platform" value="その他"> その他 ✍️</label>
+        <input type="text" class="platform-input" data-platform="その他" placeholder="その他プラットフォーム" />
+      </fieldset>
 
-      <label>活動曜日</label>
-      <div class="weekdays">
-        月<input type="checkbox" value="月" />
-        火<input type="checkbox" value="火" />
-        水<input type="checkbox" value="水" />
-        木<input type="checkbox" value="木" />
-        金<input type="checkbox" value="金" />
-        土<input type="checkbox" value="土" />
-        日<input type="checkbox" value="日" />
-      </div>
-
-      <label>配信スタイル</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="雑談多め" /> 雑談多め</label>
-        <label><input type="checkbox" value="ゲーム集中型" /> ゲーム集中型</label>
-        <label><input type="checkbox" value="作業用BGM" /> 作業用BGM</label>
-        <label><input type="checkbox" value="歌枠" /> 歌枠</label>
-        <label><input type="checkbox" value="絵描き枠" /> 絵描き枠</label>
-        <label><input type="checkbox" value="歌ってみた" /> 歌ってみた</label>
-        <label><input type="checkbox" value="企画配信" /> 企画配信</label>
-        <label><input type="checkbox" value="チャット重視" /> チャット重視</label>
-        <label><input type="checkbox" value="初見歓迎" /> 初見歓迎</label>
-        <label><input type="checkbox" value="コラボ中心" /> コラボ中心</label>
-        <label><input type="checkbox" value="コメント歓迎 / ロム歓迎" /> コメント歓迎 / ロム歓迎</label>
-        <label><input type="checkbox" value="リスナー参加型" /> リスナー参加型</label>
-        <label><input type="checkbox" value="ASMR枠" /> ASMR枠</label>
-        <label><input type="checkbox" value="FPSプレイ中心" /> FPSプレイ中心</label>
-        <label><input type="checkbox" value="RP（ロールプレイ）" /> RP（ロールプレイ）</label>
-      </div>
-
-      <label>ゲームジャンル（最大3つ）</label>
-      <div class="checkbox-group limited" data-limit="3">
-        <label><input type="checkbox" value="FPS／TPS" /> FPS／TPS</label>
-        <label><input type="checkbox" value="アクション／ARPG" /> アクション／ARPG</label>
-        <label><input type="checkbox" value="ホラー" /> ホラー</label>
-        <label><input type="checkbox" value="パーティ／カジュアル" /> パーティ／カジュアル</label>
-        <label><input type="checkbox" value="シミュレーション" /> シミュレーション</label>
-        <label><input type="checkbox" value="パズル・ボード" /> パズル・ボード</label>
-        <label><input type="checkbox" value="MOBA" /> MOBA</label>
-        <label><input type="checkbox" value="音ゲー" /> 音ゲー</label>
-        <label><input type="checkbox" value="TRPG" /> TRPG</label>
-        <label><input type="text" placeholder="その他" /></label>
-      </div>
-
-      <label>プレイスタイル</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" value="雑談メイン" /> 雑談メイン</label>
-        <label><input type="checkbox" value="ガチプレイ" /> ガチプレイ</label>
-        <label><input type="checkbox" value="ゆるプレイ" /> ゆるプレイ</label>
-        <label><input type="checkbox" value="まったり" /> まったり</label>
-        <label><input type="checkbox" value="解説・実況" /> 解説・実況</label>
-      </div>
-
-      <label>特徴タグ（最大3つ）<input type="text" placeholder="ちるい、気圧に弱い など" /></label>
-
-      <label>コメント</label>
-      <select>
-        <option>いっぱい話しかけて！</option>
-        <option>のんびり話そう</option>
-        <option>静かに見守ってね</option>
-        <option>必要なときだけでOK</option>
-        <option>チャットはご遠慮ください</option>
-        <option>自由入力</option>
-      </select>
-
-      <label>ROM</label>
-      <select>
-        <option>見てるだけでも大歓迎！</option>
-        <option>無言でOK！ゆっくりしてって！</option>
-        <option>見るだけも、おしゃべりもOK</option>
-        <option>よければ反応してくれるとうれしい！</option>
-        <option>一言ほしい派です！</option>
-        <option>自由入力</option>
-      </select>
-
-      <label>コラボ方針</label>
-      <select>
-        <option>お声がけどんどんどうぞ！</option>
-        <option>気心知れたらぜひ！</option>
-        <option>基本はひとりでやってます</option>
-        <option>自由入力</option>
-      </select>
-
-      <label>ひとこと</label>
-      <input type="text" placeholder="世界観や雰囲気をひとことで" />
-
-      <hr />
-
-      <h3>ビジュアル設定</h3>
-      <label>背景色</label><br />
-      <div class="bg-sample bg-black" data-bg="black"></div>
-      <div class="bg-sample bg-white" data-bg="white"></div>
-      <div class="bg-sample bg-gradient" data-bg="gradient"></div>
-
-      <label>背景画像（任意）<input type="file" id="background-img" accept="image/*" /></label>
-
-      <label>文字色</label><br />
-      <input type="color" id="font-color" />
-
-      <label>フォント選択</label><br />
-      <div class="font-sample" style="font-family: sans-serif">サンプルA</div>
-      <div class="font-sample" style="font-family: serif">サンプルB</div>
-      <div class="font-sample" style="font-family: monospace">サンプルC</div>
-      <div class="font-sample" style="font-family: cursive">サンプルD</div>
-      <div class="font-sample" style="font-family: fantasy">サンプルE</div>
-
-      <button id="generate-image">画像として出力</button>
+      <!-- 出力ボタン -->
+      <button id="generateBtn">画像を生成する</button>
     </div>
 
-    <div class="preview">
-      <h2>リアルタイムプレビュー</h2>
-      <div id="preview-content" style="border-radius: 20px; overflow: hidden; background: #fff; padding: 1em;">
-        <!-- 動的にここへ反映予定 -->
+    <div class="preview-area">
+      <div id="previewCard">
+        <img id="iconPreview" src="" alt="アイコン" />
+        <div class="info">
+          <h2 id="namePreview">名前</h2>
+          <p id="xPreview">@example</p>
+          <div id="platformPreview"></div>
+        </div>
       </div>
+
+      <a id="downloadLink" style="display:none">画像をダウンロード</a>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
