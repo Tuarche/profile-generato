@@ -1,26 +1,148 @@
 body {
   font-family: sans-serif;
-  background-color: #f4f4f4;
   margin: 0;
   padding: 0;
+  background: #f5f5f5;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.editor {
+  width: 45%;
+  padding: 1.5em;
+  overflow-y: auto;
+  height: 100vh;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.preview {
+  width: 55%;
+  padding: 1.5em;
+  background: #eee;
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+}
+
+input[type="text"],
+select,
+input[type="color"] {
+  width: 100%;
+  padding: 0.3em;
+  margin-bottom: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="file"] {
+  margin-bottom: 1em;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.checkbox-group label {
+  flex: 1 0 45%;
+  font-weight: normal;
+}
+
+.weekdays {
+  display: flex;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.weekdays label {
+  flex: 1;
+}
+
+.bg-sample {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  margin-right: 0.5em;
+  margin-bottom: 1em;
+}
+
+.bg-black { background: #000; }
+.bg-white { background: #fff; }
+.bg-gradient { background: linear-gradient(45deg, #ff8a00, #e52e71, #4a00e0); }
+
+.font-sample {
+  display: inline-block;
+  padding: 0.4em;
+  margin: 0.3em;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+#preview-content {
+  width: 720px;
+  min-height: 900px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 2em;
+  box-sizing: border-box;
+  color: #000;
 }
 
 .preview-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 20px;
+  align-items: flex-start;
 }
 
-#preview-content {
-  background: white;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.preview-section {
+  margin-bottom: 1.5em;
 }
 
-.section-title {
+.preview-section .label {
   font-weight: bold;
-  margin-top: 10px;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 4px;
+  margin-bottom: 0.3em;
+  display: block;
+}
+
+.activity-bar,
+.weekday-bar {
+  display: flex;
+  gap: 2px;
+  margin-top: 0.5em;
+  flex-wrap: wrap;
+}
+
+.activity-bar span,
+.weekday-bar span {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  text-align: center;
+  line-height: 18px;
+  border-radius: 4px;
+  background: #ccc;
+}
+
+.activity-bar span.active,
+.weekday-bar span.active {
+  background: #4caf50;
+  color: #fff;
 }
